@@ -175,8 +175,13 @@ function row(f){
     `<div class="sub">${esc(f.f)}${f.al?" · "+esc(f.al):""}${f.term?" · Terminal "+esc(f.term):""}</div></div>`+
     `<div class="st"><span class="lab ${esc(f.k)}">${esc(f.s)}</span></div></div>`;
 }
+function comingSoon(c){
+  return `<div class="banner" style="margin-top:4px">${AP[c].name} departures are coming soon.`+
+    `<span>We're working on adding live ${AP[c].name} departures. For now, check <a href="${AP[c].board}" target="_blank" rel="noopener">${AP[c].name} Airport's own departures board</a>.</span></div>`;
+}
 fetch("data/flights.json",{cache:"no-cache"}).then(r=>r.json()).then(data=>{
-  const codes=["LPL","MAN"].filter(c=>data.airports[c]);
+  const ALL=["LPL","MAN"];
+  const codes=ALL.filter(c=>data.airports[c]);   // airports with data (Liverpool: coming soon until the airport agrees)
   const upd=new Date(data.generated), mins=Math.round((Date.now()-upd)/60000);
   document.getElementById("meta").textContent=`Updated ${upd.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})} on ${upd.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})}. Checked every 15 minutes.`;
   if(codes.length>1){
@@ -199,11 +204,19 @@ fetch("data/flights.json",{cache:"no-cache"}).then(r=>r.json()).then(data=>{
 
   const tabs=document.getElementById("tabs"),q=document.getElementById("q"),past=document.getElementById("past"),list=document.getElementById("list");
   codes.forEach(c=>(data.airports[c].flights||[]).forEach(f=>f._s=(f.to+" "+f.code+" "+f.f+" "+String(f.f||"").replace(/\s/g,"")+" "+f.al).toLowerCase()));
-  let cur=codes.find(c=>location.hash==="#"+AP[c].slug)||codes[0];
+  let cur=ALL.find(c=>location.hash==="#"+AP[c].slug)||codes[0];
   function drawTabs(){
-    tabs.innerHTML=codes.length>1?codes.map(c=>`<button role="tab" data-c="${c}" aria-selected="${c===cur}">${AP[c].name}</button>`).join(""):"";
+    tabs.innerHTML=ALL.map(c=>`<button role="tab" data-c="${c}" aria-selected="${c===cur}">${AP[c].name}${data.airports[c]?"":"<small>Coming soon</small>"}</button>`).join("");
   }
   function run(){
+    const tools=document.querySelector(".tools");
+    if(!data.airports[cur]){
+      tools.style.display="none";
+      document.getElementById("count").textContent="";
+      list.innerHTML=comingSoon(cur);
+      return;
+    }
+    tools.style.display="";
     const fl=(data.airports[cur].flights)||[];
     const w=q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
     const hits=fl.filter(f=>(past.checked||!f.g)&&w.every(x=>f._s.includes(x)));
