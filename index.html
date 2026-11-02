@@ -31,6 +31,13 @@ h2.sec{font-size:22px;font-weight:800;color:var(--black);margin:28px 0 12px;padd
 .banner.warn{border-color:var(--amber);background:var(--amber-bg);color:#7a3a05}
 .banner.bad{border-color:var(--red);background:var(--red-bg);color:#7f1414}
 .banner span{display:block;font-weight:400;font-size:14px;margin-top:2px}
+.banner .ap{display:block;font-weight:700;font-size:15px;margin:0}
+.banner .ap+.ap{margin-top:2px}
+.tabs{display:flex;gap:0;margin:0 0 12px;border-bottom:2px solid var(--black)}
+.tabs:empty{display:none}
+.tabs button{font:inherit;font-size:16px;font-weight:800;min-height:44px;padding:8px 18px;border:0;background:var(--grey-bg);color:var(--head);cursor:pointer;margin-right:4px}
+.tabs button[aria-selected=true]{background:var(--black);color:#fff}
+.tabs button small{font-weight:600;font-size:12px;margin-left:6px;opacity:.8}
 .tools{display:flex;gap:8px;margin:0 0 10px;flex-wrap:wrap}
 input[type=search]{flex:1 1 260px;font:inherit;font-size:16px;min-height:44px;padding:8px 10px;border:1px solid #ced4da;border-radius:4px;background:#fff;color:var(--ink)}
 input[type=search]:focus{outline:2px solid var(--green);border-color:var(--green)}
@@ -87,11 +94,12 @@ label.chk input{width:18px;height:18px}
 </div></nav>
 <main class="wrap">
 <p class="crumb"><a href="https://www.deeside.com/">Deeside.com</a> &rsaquo; Live tools</p>
-<h1>Manchester Airport departures</h1>
-<p class="lede">Flights leaving Manchester in the next six hours, with delays, new departure times and cancellations.</p>
+<h1 id="h1">Manchester Airport departures</h1>
+<p class="lede" id="lede">Flights leaving Manchester in the next six hours, with delays, new departure times and cancellations.</p>
 <p class="meta" id="meta">Loading the latest departures…</p>
 
 <div id="banner"></div>
+<div class="tabs" id="tabs" role="tablist"></div>
 
 <div class="tools">
 <input id="q" type="search" placeholder="Search by destination, flight number or airline" autocomplete="off" aria-label="Search flights">
@@ -102,11 +110,11 @@ label.chk input{width:18px;height:18px}
 
 <h2 class="sec">Before you travel</h2>
 <div class="explain">
-<p>This page is a quick guide and can be up to 15 minutes behind. For gates, security times and the final word on your flight, check <a href="https://www.manchesterairport.co.uk/departures/" target="_blank" rel="noopener">Manchester Airport's own departures board</a> and your airline's app.</p>
+<p id="boards">This page is a quick guide and can be up to 15 minutes behind. For gates, security times and the final word on your flight, check <a href="https://www.manchesterairport.co.uk/departures/" target="_blank" rel="noopener">Manchester Airport's own departures board</a> and your airline's app.</p>
 <p>If your flight is cancelled or badly delayed, your airline has to offer you help. Check what you are entitled to on the <a href="https://www.caa.co.uk/passengers-and-public/resolving-travel-problems/delays-and-cancellations/" target="_blank" rel="noopener">Civil Aviation Authority's website</a>.</p>
 </div>
 
-<p class="source">Flight data: AeroDataBox. Departures from 30 minutes ago to six hours ahead, updated every 15 minutes. Times are UK local time. Not an official Manchester Airport service.</p>
+<p class="source" id="source">Flight data: AeroDataBox. Departures from 30 minutes ago to six hours ahead, updated every 15 minutes. Times are UK local time. Not an official Manchester Airport service.</p>
 </main>
 <footer class="dsf">
   <div class="dsf-inner">
@@ -156,54 +164,56 @@ label.chk input{width:18px;height:18px}
 <script>
 (function(){
 const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
-const STATUS={Expected:"On time",Unknown:"Scheduled",CheckIn:"Check-in open",Boarding:"Boarding",GateClosed:"Gate closed",Delayed:"Delayed",Diverted:"Diverted"};
-const GONE=["Departed","EnRoute","Approaching","Arrived"];
-
-function state(f){
-  if(f.cx) return {cls:"cx",txt:"Cancelled"};
-  if(f.cu) return {cls:"late",txt:"Check with airline"};
-  if(GONE.includes(f.st)) return {cls:"gone",txt:"Departed"+(f.nt?" "+f.nt:""),gone:true};
-  if((f.dl||0)>=15&&f.nt) return {cls:"late",txt:"Delayed to "+f.nt};
-  const base=STATUS[f.st]||"Scheduled";
-  if(f.st==="Boarding"||f.st==="GateClosed") return {cls:"go",txt:base+(f.gate?" · Gate "+f.gate:"")};
-  return {cls:"ok",txt:base};
-}
+const AP={
+  LPL:{name:"Liverpool",slug:"liverpool",board:"https://www.liverpoolairport.com/flights/arrivals-and-departures",src:"Liverpool John Lennon Airport",cx:2,late:3},
+  MAN:{name:"Manchester",slug:"manchester",board:"https://www.manchesterairport.co.uk/departures/",src:"AeroDataBox",cx:5,late:10}
+};
 function row(f){
-  const s=state(f);
-  const t=(f.dl||0)>=15&&f.nt&&!s.gone&&!f.cx?`${esc(f.nt)}<s>${esc(f.t)}</s>`:esc(f.t);
-  return `<div class="fl${s.gone?" past":""}"><div class="t">${t}</div>`+
+  const moved=(f.dl||0)>=15&&f.nt&&!f.g&&!f.cx;
+  return `<div class="fl${f.g?" past":""}"><div class="t">${moved?`${esc(f.nt)}<s>${esc(f.t)}</s>`:esc(f.t)}</div>`+
     `<div><div class="to">${esc(f.to)} <span class="sub">(${esc(f.code)})</span></div>`+
-    `<div class="sub">${esc(f.f)} · ${esc(f.al||"")}${f.term?" · Terminal "+esc(f.term):""}</div></div>`+
-    `<div class="st"><span class="lab ${s.cls}">${esc(s.txt)}</span></div></div>`;
+    `<div class="sub">${esc(f.f)}${f.al?" · "+esc(f.al):""}${f.term?" · Terminal "+esc(f.term):""}</div></div>`+
+    `<div class="st"><span class="lab ${esc(f.k)}">${esc(f.s)}</span></div></div>`;
 }
-
 fetch("data/flights.json",{cache:"no-cache"}).then(r=>r.json()).then(data=>{
-  const a=data.airports.MAN;
-  const upd=new Date(data.generated);
-  const mins=Math.round((Date.now()-upd)/60000);
+  const codes=["LPL","MAN"].filter(c=>data.airports[c]);
+  const upd=new Date(data.generated), mins=Math.round((Date.now()-upd)/60000);
   document.getElementById("meta").textContent=`Updated ${upd.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})} on ${upd.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})}. Checked every 15 minutes.`;
-  const flights=(a&&a.flights)||[];
-  const live=a&&a.ok&&!a.paused&&mins<=60;
-  const ban=document.getElementById("banner");
-  if(!live){
-    ban.innerHTML=`<div class="banner warn">Live updates are paused right now.<span>Check <a href="https://www.manchesterairport.co.uk/departures/" target="_blank" rel="noopener">Manchester Airport's departures board</a> for the latest.</span></div>`;
-  } else {
-    const cx=flights.filter(f=>f.cx).length, late=flights.filter(f=>!f.cx&&!GONE.includes(f.st)&&(f.dl||0)>=60).length;
-    const cls=cx>=5||late>=10?"bad":cx||late?"warn":"";
-    const head=cx||late?[cx?cx+" cancelled":"",late?late+" running an hour or more late":""].filter(Boolean).join(" and "):"No major disruption at Manchester right now";
-    ban.innerHTML=`<div class="banner ${cls}">${esc(head)}<span>Departures from 30 minutes ago to six hours ahead.</span></div>`;
+  if(codes.length>1){
+    document.getElementById("h1").textContent="Liverpool and Manchester Airport departures";
+    document.getElementById("lede").textContent="Flights leaving Liverpool and Manchester in the next six hours, with delays, new departure times and cancellations.";
+    document.getElementById("boards").innerHTML='This page is a quick guide and can be up to 15 minutes behind. For gates, security times and the final word on your flight, check <a href="'+AP.LPL.board+'" target="_blank" rel="noopener">Liverpool Airport\'s departures board</a> or <a href="'+AP.MAN.board+'" target="_blank" rel="noopener">Manchester Airport\'s</a>, and your airline\'s app.';
+    document.getElementById("source").textContent="Flight data: Liverpool John Lennon Airport (Liverpool) and AeroDataBox (Manchester). Departures from 30 minutes ago to six hours ahead, updated every 15 minutes. Times are UK local time. Not an official airport service.";
   }
-  const q=document.getElementById("q"),past=document.getElementById("past"),list=document.getElementById("list");
-  flights.forEach(f=>f._s=(f.to+" "+f.code+" "+f.f+" "+String(f.f||"").replace(/\s/g,"")+" "+f.al).toLowerCase());
+  // Banner: one line per airport
+  let worst="";
+  const lines=codes.map(c=>{
+    const a=data.airports[c],cfg=AP[c],fl=a.flights||[];
+    if(!a.ok||a.paused||mins>60){worst=worst||"warn";return `<span class="ap">${cfg.name}: live updates paused. <a href="${cfg.board}" target="_blank" rel="noopener">Check the airport's board</a></span>`}
+    const cx=fl.filter(f=>f.cx).length, late=fl.filter(f=>!f.cx&&!f.g&&(f.dl||0)>=60).length;
+    if(cx>=cfg.cx||late>=cfg.late)worst="bad"; else if((cx||late)&&worst!=="bad")worst="warn";
+    const txt=cx||late?[cx?cx+" cancelled":"",late?late+" running an hour or more late":""].filter(Boolean).join(", "):"no major disruption";
+    return `<span class="ap">${cfg.name}: ${txt}</span>`;
+  });
+  document.getElementById("banner").innerHTML=`<div class="banner ${worst}">${lines.join("")}<span>Departures from 30 minutes ago to six hours ahead.</span></div>`;
+
+  const tabs=document.getElementById("tabs"),q=document.getElementById("q"),past=document.getElementById("past"),list=document.getElementById("list");
+  codes.forEach(c=>(data.airports[c].flights||[]).forEach(f=>f._s=(f.to+" "+f.code+" "+f.f+" "+String(f.f||"").replace(/\s/g,"")+" "+f.al).toLowerCase()));
+  let cur=codes.find(c=>location.hash==="#"+AP[c].slug)||codes[0];
+  function drawTabs(){
+    tabs.innerHTML=codes.length>1?codes.map(c=>`<button role="tab" data-c="${c}" aria-selected="${c===cur}">${AP[c].name}</button>`).join(""):"";
+  }
   function run(){
+    const fl=(data.airports[cur].flights)||[];
     const w=q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
-    const hits=flights.filter(f=>(past.checked||!state(f).gone)&&w.every(x=>f._s.includes(x)));
-    document.getElementById("count").textContent=`${hits.length} flight${hits.length===1?"":"s"}`;
+    const hits=fl.filter(f=>(past.checked||!f.g)&&w.every(x=>f._s.includes(x)));
+    document.getElementById("count").textContent=`${hits.length} flight${hits.length===1?"":"s"} from ${AP[cur].name}`;
     list.innerHTML=hits.length?hits.map(row).join(""):'<p class="empty">No flights match that search.</p>';
   }
+  tabs.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;cur=b.dataset.c;history.replaceState(null,"","#"+AP[cur].slug);drawTabs();run()});
   let t;q.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(run,150)});
   past.addEventListener("change",run);
-  run();
+  drawTabs();run();
 }).catch(()=>{document.getElementById("meta").textContent="Sorry, departures could not be loaded. Please try again shortly.";document.getElementById("list").innerHTML=""});
 })();
 </script>
