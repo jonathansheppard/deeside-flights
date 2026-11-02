@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Manchester Airport departures today | Deeside.com</title>
+<meta name="description" content="Live departures from Manchester Airport for the next six hours: delays, new departure times and cancellations at a glance. Updated every 15 minutes.">
+<link rel="canonical" href="https://flights.deeside.com/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--green:#88C425;--green-dk:#4D7A0C;--black:#000001;--head:#2D2D2D;--ink:#212529;--muted:#6C757D;--rule:#E9ECEF;--grey-bg:#F2F3F3;--white:#FFFFFF;--amber-bg:#FFF4E0;--amber:#B45309;--red-bg:#FDECEC;--red:#B91C1C}
+*{box-sizing:border-box}
+body{margin:0;background:var(--white);color:var(--ink);font-family:'Open Sans',-apple-system,'Segoe UI',Roboto,Arial,sans-serif;font-size:15px;line-height:1.6}
+a{color:var(--green-dk)}
+.wrap{max-width:960px;margin:0 auto;padding:0 16px}
+nav.site{background:#000;min-height:80px;display:flex;align-items:center}
+nav.site .in{max-width:1140px;width:100%;margin:0 auto;padding:0 16px;display:flex;justify-content:space-between;align-items:center}
+nav.site .brand{display:block;max-width:250px;width:62%}
+nav.site .brand img{width:100%;display:block}
+nav.site ul{list-style:none;margin:0;padding:0}
+nav.site li{display:inline-block}
+nav.site li a{color:#fff;text-decoration:none;font-size:14px;margin:0 6px;text-transform:uppercase}
+.crumb{font-size:13px;color:var(--muted);margin:20px 0 0}
+.crumb a{color:var(--muted)}
+h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;margin:4px 0 8px;font-weight:800;color:var(--head)}
+.lede{font-size:17px;margin:0 0 4px;max-width:720px}
+.meta{font-size:13px;color:var(--muted);margin:0 0 16px}
+h2.sec{font-size:22px;font-weight:800;color:var(--black);margin:28px 0 12px;padding:0 0 6px;border-bottom:2px solid var(--black)}
+.banner{padding:12px 14px;margin:0 0 16px;font-weight:700;border-left:5px solid var(--green-dk);background:var(--grey-bg);color:var(--head)}
+.banner.warn{border-color:var(--amber);background:var(--amber-bg);color:#7a3a05}
+.banner.bad{border-color:var(--red);background:var(--red-bg);color:#7f1414}
+.banner span{display:block;font-weight:400;font-size:14px;margin-top:2px}
+.tools{display:flex;gap:8px;margin:0 0 10px;flex-wrap:wrap}
+input[type=search]{flex:1 1 260px;font:inherit;font-size:16px;min-height:44px;padding:8px 10px;border:1px solid #ced4da;border-radius:4px;background:#fff;color:var(--ink)}
+input[type=search]:focus{outline:2px solid var(--green);border-color:var(--green)}
+label.chk{display:flex;align-items:center;gap:6px;font-size:14px;min-height:44px}
+label.chk input{width:18px;height:18px}
+.count{font-size:13px;color:var(--muted);margin:0 0 4px}
+.fl{display:grid;grid-template-columns:64px 1fr auto;gap:2px 12px;align-items:start;border-top:1px solid var(--rule);padding:10px 0}
+.fl:last-child{border-bottom:1px solid var(--rule)}
+.fl .t{font-size:18px;font-weight:800;color:var(--head);font-variant-numeric:tabular-nums;line-height:1.3}
+.fl .t s{display:block;font-size:13px;font-weight:600;color:var(--muted)}
+.fl .to{font-size:16px;font-weight:700;color:var(--head);line-height:1.35}
+.fl .sub{font-size:13px;color:var(--muted)}
+.lab{display:inline-block;font-size:13px;font-weight:700;padding:3px 8px;line-height:1.3;white-space:nowrap}
+.lab.ok{background:var(--grey-bg);color:var(--head)}
+.lab.go{background:var(--black);color:#fff}
+.lab.gone{background:var(--grey-bg);color:var(--muted)}
+.lab.late{background:var(--amber-bg);color:var(--amber)}
+.lab.cx{background:var(--red);color:#fff}
+.fl.past{opacity:.6}
+.empty{color:var(--muted);padding:12px 0}
+.explain p{margin:0 0 10px;max-width:760px}
+.source{font-size:12.5px;color:var(--muted);margin:24px 0 28px;border-top:1px solid var(--rule);padding-top:10px}
+.loading{display:flex;align-items:center;justify-content:center;gap:10px;padding:22px 12px;color:#6c757d;font-size:14px}
+.loading::before{content:"";width:18px;height:18px;border:3px solid #e9ecef;border-top-color:#88c425;border-radius:50%;animation:dsspin .8s linear infinite}
+@keyframes dsspin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.loading::before{animation:none}}
+@media (max-width:640px){h1{font-size:28px}nav.site ul{display:none}nav.site .in{justify-content:center}.fl{grid-template-columns:56px 1fr}.fl .st{grid-column:2}}
+</style>
+<style>
+.dsf{--dsf-bg:#0d0d0d;--dsf-bar:#1a1a1a;--dsf-rule:#2c2c2c;--dsf-text:#bdbdbd;--dsf-accent:#88c425;background:var(--dsf-bg);color:var(--dsf-text);font-family:"Open Sans",Arial,sans-serif;font-size:15px;line-height:1.45}
+.dsf a{color:var(--dsf-text);text-decoration:none}
+.dsf a:hover{color:#fff;text-decoration:underline}
+.dsf .dsf-inner{max-width:1100px;margin:0 auto;padding:40px 16px 8px;display:grid;grid-template-columns:1.3fr 1fr 1fr 1fr 1fr;gap:32px}
+.dsf .dsf-brand{display:flex;gap:16px;align-items:flex-start}
+.dsf .dsf-brand img{width:76px;height:76px;flex:none;border-radius:50%}
+.dsf .dsf-brand p{margin:0 0 12px}
+.dsf .dsf-brand a.dsf-cta{color:#fff;font-weight:600}
+.dsf .dsf-brand a.dsf-cta span{color:var(--dsf-accent)}
+.dsf .dsf-col h2{color:#fff;font-size:15px;font-weight:700;margin:0 0 8px;padding:0 0 8px;border-bottom:1px solid var(--dsf-rule)}
+.dsf ul{list-style:none;margin:0;padding:0}
+.dsf li a{display:block;padding:6px 0}
+.dsf .dsf-bar{background:var(--dsf-bar);margin-top:32px}
+.dsf .dsf-bar-inner{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 24px;font-size:13px;color:#8a8a8a}
+.dsf .dsf-bar a{color:#8a8a8a}
+.dsf .dsf-partners a+a::before{content:"\00B7";margin:0 8px;color:#555}
+@media (max-width:900px){.dsf .dsf-inner{grid-template-columns:1fr 1fr 1fr}.dsf .dsf-brand{grid-column:1/-1}}
+@media (max-width:600px){.dsf .dsf-inner{grid-template-columns:1fr 1fr;gap:28px 20px;padding-top:32px}.dsf .dsf-about{grid-column:1/-1}.dsf .dsf-bar-inner{flex-direction:column}}
+</style>
+</head>
+<body>
+<nav class="site"><div class="in">
+<a class="brand" href="https://www.deeside.com/"><img src="img/deeside-logo2020nobadge.jpg" alt="Deeside.com"></a>
+<ul><li><a href="https://www.deeside.com/news/">Latest</a></li><li><a href="https://www.deeside.com/fuel-price-map/">Fuel prices</a></li><li><a href="https://www.deeside.com/police-and-crime/">Police</a></li><li><a href="https://www.deeside.com/contact/">Contact</a></li><li><a href="https://www.deeside.com/advertise/">Advertise</a></li></ul>
+</div></nav>
+<main class="wrap">
+<p class="crumb"><a href="https://www.deeside.com/">Deeside.com</a> &rsaquo; Live tools</p>
+<h1>Manchester Airport departures</h1>
+<p class="lede">Flights leaving Manchester in the next six hours, with delays, new departure times and cancellations.</p>
+<p class="meta" id="meta">Loading the latest departures…</p>
+
+<div id="banner"></div>
+
+<div class="tools">
+<input id="q" type="search" placeholder="Search by destination, flight number or airline" autocomplete="off" aria-label="Search flights">
+<label class="chk"><input type="checkbox" id="past"> Show departed flights</label>
+</div>
+<p class="count" id="count"></p>
+<div id="list"><p class="loading">Loading departures</p></div>
+
+<h2 class="sec">Before you travel</h2>
+<div class="explain">
+<p>This page is a quick guide and can be up to 15 minutes behind. For gates, security times and the final word on your flight, check <a href="https://www.manchesterairport.co.uk/departures/" target="_blank" rel="noopener">Manchester Airport's own departures board</a> and your airline's app.</p>
+<p>If your flight is cancelled or badly delayed, your airline has to offer you help. Check what you are entitled to on the <a href="https://www.caa.co.uk/passengers-and-public/resolving-travel-problems/delays-and-cancellations/" target="_blank" rel="noopener">Civil Aviation Authority's website</a>.</p>
+</div>
+
+<p class="source">Flight data: AeroDataBox. Departures from 30 minutes ago to six hours ahead, updated every 15 minutes. Times are UK local time. Not an official Manchester Airport service.</p>
+</main>
+<footer class="dsf">
+  <div class="dsf-inner">
+    <div class="dsf-brand">
+      <img src="img/deeside-black-logofooter-new.jpg" alt="Deeside.com">
+      <div>
+        <p>Independent news for Deeside and Flintshire since 2014, covering the towns and villages along the River Dee and the border with Chester.</p>
+        <a class="dsf-cta" href="https://www.deeside.com/contact/">Got a story? Get in touch <span>&rarr;</span></a>
+      </div>
+    </div>
+    <div class="dsf-col"><h2>Live tools</h2><ul>
+      <li><a href="https://www.deeside.com/deeside-right-now/">Weather, warnings and tides</a></li>
+      <li><a href="https://www.deeside.com/deeside-live-traffic-information/">Live traffic</a></li>
+      <li><a href="https://north.wales/a55-traffic-cameras">A55 traffic cameras</a></li>
+      <li><a href="https://www.deeside.com/trafficcams/">A494 traffic cameras</a></li>
+      <li><a href="https://www.deeside.com/fuel-price-map/">Fuel prices</a></li>
+      <li><a href="https://www.deeside.com/wrexham-bidston-line/">Wrexham to Bidston line</a></li>
+      <li><a href="https://www.deeside.com/police-and-crime/">Police and crime</a></li>
+      <li><a href="https://planning.deeside.com/">Planning applications</a></li>
+      <li><a href="https://hygiene.deeside.com/">Food hygiene ratings</a></li>
+      <li><a href="https://flights.deeside.com/">Airport departures</a></li></ul></div>
+    <div class="dsf-col"><h2>Town guides</h2><ul>
+      <li><a href="https://www.deeside.com/broughton-guide/">Broughton and Bretton</a></li>
+      <li><a href="https://www.deeside.com/buckley-guide/">Buckley</a></li>
+      <li><a href="https://www.deeside.com/connahs-quay-guide/">Connah's Quay</a></li>
+      <li><a href="https://www.deeside.com/flint-guide/">Flint</a></li>
+      <li><a href="https://www.deeside.com/hawarden-ewloe-guide/">Hawarden and Ewloe</a></li>
+      <li><a href="https://www.deeside.com/mold-guide/">Mold</a></li>
+      <li><a href="https://www.deeside.com/saltney-guide/">Saltney</a></li>
+      <li><a href="https://www.deeside.com/shotton-queensferry-guide/">Shotton and Queensferry</a></li></ul></div>
+    <div class="dsf-col"><h2>Guides</h2><ul>
+      <li><a href="https://www.deeside.com/wepre-park/">Wepre Park</a></li>
+      <li><a href="https://www.deeside.com/theatr-clwyd/">Theatr Clwyd</a></li>
+      <li><a href="https://www.deeside.com/a55-a494-junction-guide/">A55 and A494 junctions</a></li></ul></div>
+    <div class="dsf-col dsf-about"><h2>Deeside.com</h2><ul>
+      <li><a href="https://www.deeside.com/contact/">Contact us</a></li>
+      <li><a href="https://www.deeside.com/advertise/">Advertise</a></li>
+      <li><a href="https://www.deeside.com/complaints/">Complaints</a></li>
+      <li><a href="https://www.deeside.com/privacy-policy-further-information/">Privacy</a></li>
+      <li><a href="https://www.deeside.com/disclosure/">Disclosure</a></li></ul></div>
+  </div>
+  <div class="dsf-bar"><div class="dsf-bar-inner">
+    <span>&copy; Deeside.com Est. 2014</span>
+    <span class="dsf-partners">Partner sites: <a href="https://www.wrexham.com/">Wrexham.com</a><a href="https://www.businesswales.com/">BusinessWales.com</a><a href="https://north.wales/">North.Wales</a><a href="https://news.wales">News.Wales</a></span>
+  </div></div>
+</footer>
+<script>
+(function(){
+const esc=s=>String(s==null?"":s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const STATUS={Expected:"On time",Unknown:"Scheduled",CheckIn:"Check-in open",Boarding:"Boarding",GateClosed:"Gate closed",Delayed:"Delayed",Diverted:"Diverted"};
+const GONE=["Departed","EnRoute","Approaching","Arrived"];
+
+function state(f){
+  if(f.cx) return {cls:"cx",txt:"Cancelled"};
+  if(f.cu) return {cls:"late",txt:"Check with airline"};
+  if(GONE.includes(f.st)) return {cls:"gone",txt:"Departed"+(f.nt?" "+f.nt:""),gone:true};
+  if((f.dl||0)>=15&&f.nt) return {cls:"late",txt:"Delayed to "+f.nt};
+  const base=STATUS[f.st]||"Scheduled";
+  if(f.st==="Boarding"||f.st==="GateClosed") return {cls:"go",txt:base+(f.gate?" · Gate "+f.gate:"")};
+  return {cls:"ok",txt:base};
+}
+function row(f){
+  const s=state(f);
+  const t=(f.dl||0)>=15&&f.nt&&!s.gone&&!f.cx?`${esc(f.nt)}<s>${esc(f.t)}</s>`:esc(f.t);
+  return `<div class="fl${s.gone?" past":""}"><div class="t">${t}</div>`+
+    `<div><div class="to">${esc(f.to)} <span class="sub">(${esc(f.code)})</span></div>`+
+    `<div class="sub">${esc(f.f)} · ${esc(f.al||"")}${f.term?" · Terminal "+esc(f.term):""}</div></div>`+
+    `<div class="st"><span class="lab ${s.cls}">${esc(s.txt)}</span></div></div>`;
+}
+
+fetch("data/flights.json",{cache:"no-cache"}).then(r=>r.json()).then(data=>{
+  const a=data.airports.MAN;
+  const upd=new Date(data.generated);
+  const mins=Math.round((Date.now()-upd)/60000);
+  document.getElementById("meta").textContent=`Updated ${upd.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"})} on ${upd.toLocaleDateString("en-GB",{weekday:"long",day:"numeric",month:"long"})}. Checked every 15 minutes.`;
+  const flights=(a&&a.flights)||[];
+  const live=a&&a.ok&&!a.paused&&mins<=60;
+  const ban=document.getElementById("banner");
+  if(!live){
+    ban.innerHTML=`<div class="banner warn">Live updates are paused right now.<span>Check <a href="https://www.manchesterairport.co.uk/departures/" target="_blank" rel="noopener">Manchester Airport's departures board</a> for the latest.</span></div>`;
+  } else {
+    const cx=flights.filter(f=>f.cx).length, late=flights.filter(f=>!f.cx&&!GONE.includes(f.st)&&(f.dl||0)>=60).length;
+    const cls=cx>=5||late>=10?"bad":cx||late?"warn":"";
+    const head=cx||late?[cx?cx+" cancelled":"",late?late+" running an hour or more late":""].filter(Boolean).join(" and "):"No major disruption at Manchester right now";
+    ban.innerHTML=`<div class="banner ${cls}">${esc(head)}<span>Departures from 30 minutes ago to six hours ahead.</span></div>`;
+  }
+  const q=document.getElementById("q"),past=document.getElementById("past"),list=document.getElementById("list");
+  flights.forEach(f=>f._s=(f.to+" "+f.code+" "+f.f+" "+String(f.f||"").replace(/\s/g,"")+" "+f.al).toLowerCase());
+  function run(){
+    const w=q.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+    const hits=flights.filter(f=>(past.checked||!state(f).gone)&&w.every(x=>f._s.includes(x)));
+    document.getElementById("count").textContent=`${hits.length} flight${hits.length===1?"":"s"}`;
+    list.innerHTML=hits.length?hits.map(row).join(""):'<p class="empty">No flights match that search.</p>';
+  }
+  let t;q.addEventListener("input",()=>{clearTimeout(t);t=setTimeout(run,150)});
+  past.addEventListener("change",run);
+  run();
+}).catch(()=>{document.getElementById("meta").textContent="Sorry, departures could not be loaded. Please try again shortly.";document.getElementById("list").innerHTML=""});
+})();
+</script>
+</body>
+</html>
